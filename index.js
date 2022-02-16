@@ -4,11 +4,10 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const fs = require("fs");
 const inquirer = require("inquirer");
-const render = require("./lib/htmlRenderer");
+const render = require("./src/htmlRenderer");
 const teamArr = [];
 const path = require('path');
-
-// link jest
+// write a destructured link to funciton in htmlRenderer
 
 // prompts for manager
 function createManager() {
@@ -40,8 +39,64 @@ function createManager() {
         )
             teamArr.push(manager);
             console.log(teamArr);
-            const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            fs.writeFileSync(dist, `<p>${manager.name}</p>`, "UTF-8")
+            let i = (false);
+            do {
+                i = addMember();
+            } while (i)
+           
+            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
+            // fs.writeFileSync(dist, `<p>${manager.name}</p>`, "UTF-8")
+    })
+};
+
+// function addMember() {
+//         inquirer.prompt([
+//             {
+//                 type: "list",
+//                 message: "Use arrow keys to select the role of the team member to add:",
+//                 name: "memberRole",
+//                 choices: [
+//                     "Engineer",
+//                     "Intern",
+//                     {
+//                         name: "No more team members to add.",
+//                         value: false,
+//                         return (response);
+//                 ]}
+            
+//         ])
+//                         .then(response =>{
+//                             if (response.memberRole) === "Engineer"
+//                             createEngineer()
+//                         })
+//             }
+//                 };
+
+function addMember() {
+    inquirer.prompt ([
+        {
+            type: "list",
+            message: "Use arrow keys to select the role of the team member to add:",
+            name: "memberRole",
+            choices: [
+                "Engineer",
+                "Intern",
+                "No more team members to add."
+            ]
+        },
+
+    ])
+    .then (response =>{
+        console.log(response);
+        if(response.memberRole === "Engineer") {
+            createEngineer();
+        } else if (response.memberRole === "Intern") {
+            createIntern();
+        } else {
+            // writeFILE
+            return (false)
+        }
+        return (true)
     })
 };
 
@@ -75,8 +130,9 @@ function createEngineer() {
         )
             teamArr.push(engineer);
             console.log(teamArr);
-            const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            fs.writeFileSync(dist, `<p>${engineer.name}</p>`, "UTF-8")
+            addMember();
+            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
+            // fs.writeFileSync(dist, `<p>${engineer.name}</p>`, "UTF-8")
     })
 };
 
@@ -110,11 +166,15 @@ function createIntern() {
         )
             teamArr.push(intern);
             console.log(teamArr);
-            const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            fs.writeFileSync(dist, `<p>${intern.name}</p>`, "UTF-8")
+            addMember();
+            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
+            // fs.writeFileSync(dist, `<p>${intern.name}</p>`, "UTF-8")
     })
 };
 
 createManager();
-createEngineer();
-createIntern();
+// createEngineer();
+// createIntern();
+// addMember();
+
+//funciton with template literal that will take in info and call after the user exits the inquirer
