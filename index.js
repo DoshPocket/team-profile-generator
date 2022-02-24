@@ -4,10 +4,10 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const fs = require("fs");
 const inquirer = require("inquirer");
-const render = require("./src/htmlRenderer");
+const generateHtml = require("./src/generateHtml")
 const teamArr = [];
+const teamCardArr = [];
 const path = require('path');
-// write a destructured link to funciton in htmlRenderer
 
 // prompts for manager
 function createManager() {
@@ -38,39 +38,10 @@ function createManager() {
             response.inputName, response.inputNumber, response.inputEmail, response.inputOfficeNumber 
         )
             teamArr.push(manager);
-            console.log(teamArr);
-            let i = (false);
-            do {
-                i = addMember();
-            } while (i)
-           
-            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            // fs.writeFileSync(dist, `<p>${manager.name}</p>`, "UTF-8")
-    })
+            teamCardArr.push(generateManager(manager));
+            addMember();
+    }) 
 };
-
-// function addMember() {
-//         inquirer.prompt([
-//             {
-//                 type: "list",
-//                 message: "Use arrow keys to select the role of the team member to add:",
-//                 name: "memberRole",
-//                 choices: [
-//                     "Engineer",
-//                     "Intern",
-//                     {
-//                         name: "No more team members to add.",
-//                         value: false,
-//                         return (response);
-//                 ]}
-            
-//         ])
-//                         .then(response =>{
-//                             if (response.memberRole) === "Engineer"
-//                             createEngineer()
-//                         })
-//             }
-//                 };
 
 function addMember() {
     inquirer.prompt ([
@@ -93,7 +64,14 @@ function addMember() {
         } else if (response.memberRole === "Intern") {
             createIntern();
         } else {
-            // writeFILE
+            function writeToFile(fileName, data) {
+                fs.writeFile(fileName, data, (err) =>
+                err? console.error(err) : console.log('File successfully written!')
+                )}
+
+                const joinArr = teamCardArr.join('');
+                const html = generateHtml(joinArr);
+                writeToFile("./output/index.html",html);
             return (false)
         }
         return (true)
@@ -129,10 +107,8 @@ function createEngineer() {
             response.inputName, response.inputNumber, response.inputEmail, response.inputGithub 
         )
             teamArr.push(engineer);
-            console.log(teamArr);
+            teamCardArr.push(generateEngineer(engineer));
             addMember();
-            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            // fs.writeFileSync(dist, `<p>${engineer.name}</p>`, "UTF-8")
     })
 };
 
@@ -165,16 +141,69 @@ function createIntern() {
             response.inputName, response.inputNumber, response.inputEmail, response.inputSchool 
         )
             teamArr.push(intern);
-            console.log(teamArr);
+            teamCardArr.push(generateIntern(intern));
             addMember();
-            // const dist = path.join(path.resolve(__dirname, 'dist'), 'index.html');
-            // fs.writeFileSync(dist, `<p>${intern.name}</p>`, "UTF-8")
     })
 };
 
-createManager();
-// createEngineer();
-// createIntern();
-// addMember();
+let generateManager = (manager) => {
+    return`
+    <div class="card employee-card">
+    <div class="card-header bg-primary">
+        <h2 class="card-title">${manager.name}</h2>
+        <h3 class="card-title"><i class="fas fa-mug-hot mr-2"></i>${manager.getRole()}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${manager.id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${manager.email}">${manager.email}</a></li>
+            <li class="list-group-item">Office Number: ${manager.officeNumber}</li>
 
-//funciton with template literal that will take in info and call after the user exits the inquirer
+        </ul>
+    </div>
+</div>
+    
+    `
+}
+
+let generateEngineer = (engineer) => {
+    return`
+    <div class="card employee-card">
+    <div class="card-header bg-primary">
+        <h2 class="card-title">${engineer.name}</h2>
+        <h3 class="card-title"><i class="fas fa-glasses mr-2"></i>${engineer.getRole()}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${engineer.id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></li>
+            <li class="list-group-item">Github: <a href="https://github.com/${engineer.github}" target="_blank" rel="noopener noreferrer">${engineer.github}</a></li>
+
+        </ul>
+    </div>
+</div>
+    
+    `
+}
+
+let generateIntern = (intern) => {
+    return`
+    <div class="card employee-card">
+    <div class="card-header bg-primary">
+        <h2 class="card-title">${intern.name}</h2>
+        <h3 class="card-title"><i class="fas fa-user-graduate mr-2"></i>${intern.getRole()}</h3>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            <li class="list-group-item">ID: ${intern.id}</li>
+            <li class="list-group-item">Email: <a href="mailto:${intern.email}">${intern.email}</a></li>
+            <li class="list-group-item">School: ${intern.school}</li>
+
+        </ul>
+    </div>
+</div>
+    
+    `
+}
+
+createManager();
