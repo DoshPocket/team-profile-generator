@@ -35,9 +35,9 @@
   
   Once you are alerted that your file was successfully written, save your newly generated html page from the output folder. 
 
-  
+  [`Link to Tutorial`](https://drive.google.com/file/d/1mtigeRhtylxAZRoQj4FCYAAfxWBC5eSB/view?usp=sharing)
 
-  [`Link to Tutorial`](https://drive.google.com/file/d/1DqzGyg-ANU4e5xxTs96Jw5YtVgBpYE6a/view?usp=sharing)
+  
 
   ## License
 

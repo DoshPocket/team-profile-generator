@@ -42,7 +42,7 @@ function createManager() {
             addMember();
     }) 
 };
-
+// gives user option to add new eningeer, intern, or finish making team
 function addMember() {
     inquirer.prompt ([
         {
@@ -145,7 +145,7 @@ function createIntern() {
             addMember();
     })
 };
-
+//generates manager card for output
 let generateManager = (manager) => {
     return`
     <div class="card employee-card">
@@ -165,7 +165,7 @@ let generateManager = (manager) => {
     
     `
 }
-
+//generates engineer card for output
 let generateEngineer = (engineer) => {
     return`
     <div class="card employee-card">
@@ -185,7 +185,7 @@ let generateEngineer = (engineer) => {
     
     `
 }
-
+//generates intern card for output
 let generateIntern = (intern) => {
     return`
     <div class="card employee-card">
@@ -206,4 +206,5 @@ let generateIntern = (intern) => {
     `
 }
 
+// starts application with manager creation function
 createManager();
